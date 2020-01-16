@@ -5,4 +5,4 @@
 ### Instructions
 * Clone this repository
 * Open [index.html](index.html) in your browser
-* Edit designated functions in [filterProject.js](filterProject.js)
+* Edit designated sections of code in [filterProject.js](filterProject.js)

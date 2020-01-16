@@ -24,7 +24,7 @@ let picHeight = 0;
 let img, resetImg;
 let canvas;
 let loadPicButton, savePicButton, grayscaleButton, filter1Button, filter2Button, filter3Button;
-
+let grayscaleBox;
 /***********************************/
 
 function setup() {
