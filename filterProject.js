@@ -23,14 +23,13 @@ let picWidth = 0;
 let picHeight = 0;
 let img, resetImg;
 let canvas;
-let loadPicButton, savePicButton, filter1Button, filter2Button, filter3Button, filter4Button;
+let loadPicButton, savePicButton, grayscaleButton, filter1Button, filter2Button, filter3Button;
 
 /***********************************/
 
 function setup() {
     //size(800, 480);
     canvas = createCanvas(850, 480);
-    canvas.drop(gotFile);
     background(185);
     textAlign(LEFT);
     textSize(16);
@@ -49,6 +48,7 @@ function setup() {
             save(img, "filterimage.jpg");
         }
     });
+
     noLoop();
 
 }
@@ -132,34 +132,19 @@ function draw() {
     //The image is resized to best fit in a 640x480 frame.
     if (picLoaded) {
         img.loadPixels();
-        console.log('pic loaded');
-        picWidth = img.width;
-        picHeight = img.height;
-
-        if (picWidth > 640) {
-            picHeight = (int)(picHeight * (640.0 / picWidth));
-            picWidth = 640;
-        }
-        if (picHeight > 480) {
-            picWidth = (int)(picWidth * (480.0 / picHeight));
-            picHeight = 480;
-        }
-        //img.resize(picWidth, picHeight);
-        //  (640-picWidth)/2, (480-picHeight)/2    to CENTER
-        picStart = 0;
-        picEnd = picStart + img.width * img.height;
-        
+               
 
         /***** Effects Code *****/
         /* This sample grayscale code may serve as an example */
         if (Grayscale && !gPressed) {
-            //colorPixels = loadColorPixels(img);
-            //img.loadPixels();
             for(let i = 0; i<img.pixels.length;i+=4) {
+                // get RGB values
                 let r = img.pixels[i];
                 let g = img.pixels[i+1];
                 let b = img.pixels[i+2];
                 let gray = (r + g + b)/3.0;
+
+                // put RGB values back into picture
                 img.pixels[i] = gray;
                 img.pixels[i+1] = gray;
                 img.pixels[i+2] = gray;
@@ -250,62 +235,12 @@ function infileSelected(file) {
     // If it's an image file
     if (file.type === 'image') {
         resetTheImage();
-        // Create an image DOM element but don't show it
-        //resetImg = createImg(file.data,'').hide()
-        //img = createImg(file.data, '').hide();
-
         resetImg = loadImage(file.data);
         img = loadImage(file.data);
         picLoaded = true;
         redraw();
-        console.log('you should see the image now');
     } else {
         console.log('Not an image file!');
     }
 }
 
-function outfileSelected(selection) {
-    if (selection == null) {
-        println("IMAGE NOT SAVED: Window was closed or the user hit cancel.");
-    } else {
-        println("IMAGE SAVED: User selected " + selection.getAbsolutePath());
-        //    updatePixels();
-        //    redraw();
-        img.save(selection.getAbsolutePath());
-        redraw();
-    }
-
-
-}
-
-function gotFile(file) {
-    // If it's an image file
-    if (file.type === 'image') {
-        // Create an image DOM element but don't show it
-        img = createImg(file.data, 'image').hide();
-
-        picWidth = img.width;
-        picHeight = img.height;
-
-        if (picWidth > 640) {
-            picHeight = (int)(picHeight * (640.0 / picWidth));
-            picWidth = 640;
-        }
-        if (picHeight > 480) {
-            picWidth = (int)(picWidth * (480.0 / picHeight));
-            picHeight = 480;
-        }
-        //img.resize(picWidth, picHeight);
-        //  (640-picWidth)/2, (480-picHeight)/2    to CENTER
-        picStart = 0;
-        picEnd = picStart + img.width * img.height;
-        // Draw the image onto the canvas
-        image(img, (640 - picWidth) / 2, (480 - picHeight) / 2, picWidth, picHeight);
-        //redraw();
-        console.log('you should see the image now');
-        //image(img, 0, 0, canvas.width, canvas.height);
-    } else {
-        console.log('Not an image file!');
-    }
-
-}
